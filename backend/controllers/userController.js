@@ -1,4 +1,6 @@
+const { signToken } = require('../middleware/protect');
 const Users = require('../models/users');
+const jwt = require('jsonwebtoken');
 
 
 const registerUser = async(req,res) =>{
@@ -28,13 +30,15 @@ const registerUser = async(req,res) =>{
 const loginUser = async(req,res) =>{
   const{username, password} = req.body;
     try{
+      
       const existingUser = await Users.findOne({ username });
   
-      if (!existingUser || existingUser.password !== password) {
+      if (!existingUser || existingUser.password !== String(password)) {
         return res.status(403).json({ message: "Invalid username or password" });
       }
+      const token = signToken(existingUser._id);
       
-      res.status(200).json({message: "user logged in successfully"});
+      res.status(200).json({message: "user logged in successfully",token});
     }
     catch(error){
       console.error(error);

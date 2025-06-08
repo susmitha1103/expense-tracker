@@ -18,11 +18,11 @@ const expenseSchema = new mongoose.Schema({
     type: Date,
     require: true
   },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Users',
-    required: true,
-  },
+  // user: {
+  //   type: mongoose.Schema.Types.ObjectId,
+  //   ref: 'Users',
+  //   required: true,
+  // },
   note:{
     type: String,
     default: ''
