@@ -4,25 +4,25 @@ const expenseSchema = new mongoose.Schema({
 
   title:{
     type: String,
-    require: true
+    required: true
   },
   amount:{
     type: Number,
-    require: true
+    required: true
   },
   category:{
     type: String,
-    require: true
+    required: true
   },
   date:{
     type: Date,
-    require: true
+    default:Date.now()
   },
-  // user: {
-  //   type: mongoose.Schema.Types.ObjectId,
-  //   ref: 'Users',
-  //   required: true,
-  // },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Users',
+    required: true,
+  },
   note:{
     type: String,
     default: ''
