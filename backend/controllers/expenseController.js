@@ -40,6 +40,35 @@ const getExpenses = async(req,res) =>{
     res.status(403).json({message: "unable to fetch your expenses"});
     
   }
+};
+
+const updateExpenses = async(req,res) =>{
+  
+  const expense = await Expense.findOne({_id: req.params.id, user: req.user._id});
+
+  if(!expense){
+    return res.staus(404).json({message: "Expense not found or unauthorized"});
+  }
+  try{
+  const{title, amount, category, date, note} = req.body;
+
+  if(title)expense.title = title;
+  if(amount)expense.amount = amount;
+  if(category)expense.category = category;
+  if(date)expense.date = date;
+  if(note)expense.note = note;
+
+  const updatedExpense = await expense.save();
+
+  return res.status(200).json({
+    message: "Expenses updated successfully",
+    updatedExpenses : updatedExpense
+  });
+}
+catch(error){
+  console.error("error while updating expenses",error);
+  res.status(500).json({message: "server error"});
+}
 }
 
-module.exports = {addExpense,getExpenses};
+module.exports = {addExpense,getExpenses,updateExpenses};
