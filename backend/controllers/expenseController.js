@@ -69,6 +69,30 @@ catch(error){
   console.error("error while updating expenses",error);
   res.status(500).json({message: "server error"});
 }
-}
+};
 
-module.exports = {addExpense,getExpenses,updateExpenses};
+const deleteExpenses = async (req, res) => {
+  try {
+    const expenseToBeDeleted = await Expense.findOne({
+      _id: req.params.id,
+      user: req.user._id,
+    });
+
+    if (!expenseToBeDeleted) {
+      return res
+        .status(404)
+        .json({ message: "Expense not found or unauthorized" });
+    }
+
+    const deletedExpense = await expenseToBeDeleted.deleteOne();
+
+    return res.status(200).json({
+      message: "Expense deleted successfully",
+    });
+  } catch (error) {
+    console.error("Error deleting expense:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+module.exports = {addExpense,getExpenses,updateExpenses,deleteExpenses};
