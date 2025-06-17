@@ -4,7 +4,7 @@ const addExpense = async(req,res) =>{
 
   
   const{title,amount, category, date,note} = req.body;
-  const validCategories = ["Food", "Travel", "Shopping", "Stationery", "Groceries", "Others"];
+  const validCategories = ["food", "travel", "shopping", "stationery", "groceries", "others"];
 
   if(!validCategories.includes(category)){
     return res.status(400).json({message: "Invalid category, please select from predefined options"});
@@ -122,7 +122,11 @@ const getExpensesByCategory = async(req,res) =>{
   return res.status(200).json({ message: "You have no expenses in that category." });
 }
 
-  res.status(200).json({expenseByCategory});
+ res.status(200).json({
+  expenseByCategory,
+  totalAmount: expenseByCategory.reduce((sum, e) => sum + e.amount, 0)
+});
+
   }
   catch(error){
     console.error(error);
