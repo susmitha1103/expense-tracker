@@ -128,8 +128,29 @@ const getExpensesByCategory = async(req,res) =>{
     console.error(error);
     res.status(500).json({message: "Internal server error"});
   }
-  
-  
-}
+};
 
-module.exports = {addExpense,getExpenses,updateExpenses,deleteExpenses,getExpensesByCategory};
+const getTotalExpenses = async(req,res) =>{
+  try{
+    const total = await Expense.aggregate([
+      {$match:{user: req.user._id}},
+      {
+        $group:{
+          _id:null,
+          totalAmount:{$sum: "$amount"}
+        }
+      }
+    ]);
+    res.status(201).json({message:"Total expenses till date",
+      totalExpense:total[0]?.totalAmount||0
+    });
+  }
+  catch(error){
+    console.error("Error calculating total expenses:", error);
+    res.status(500).json({message: "Internal server error"});
+  }
+};
+
+
+
+module.exports = {addExpense,getExpenses,updateExpenses,deleteExpenses,getExpensesByCategory,getTotalExpenses};
