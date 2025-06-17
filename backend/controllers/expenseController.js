@@ -151,6 +151,49 @@ const getTotalExpenses = async(req,res) =>{
   }
 };
 
+const getMonthlyExpenses = async(req,res) =>{
+  try{
+    const monthlyExpenses = await Expense.aggregate([
+      {
+        $match:{user:req.user._id}
+      },
+      {
+        $group:{
+          _id:{
+            month:{
+              $month: "$date"
+            },
+            year:{
+              $year: "$date"
+            }
+          },
+          totalAmount:{$sum: "$amount"}
+        }
+      },
+        {
+        $sort:{
+          "_id.year": -1,
+          "_id.month": -1
+        }
+    }])
+    const monthNames = [
+  "January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+const formattedExpenses = monthlyExpenses.map(item => ({
+  month: `${monthNames[item._id.month - 1]} ${item._id.year}`,
+  totalAmount: item.totalAmount
+}));
+
+    res.status(201).json({message: "Monthly expenses: ",formattedExpenses})
+  }
+  catch(error){
+    console.error("Error calculaitng expenses ",error);
+    res.status(500).json({message:"Interval server error"});
+  }
+}
 
 
-module.exports = {addExpense,getExpenses,updateExpenses,deleteExpenses,getExpensesByCategory,getTotalExpenses};
+
+module.exports = {addExpense,getExpenses,updateExpenses,deleteExpenses,getExpensesByCategory,getTotalExpenses,getMonthlyExpenses};
