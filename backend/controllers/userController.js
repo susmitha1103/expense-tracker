@@ -10,13 +10,10 @@ const registerUser = async(req,res) =>{
     if(existingUser){
       return res.status(400).json({message: `username ${username} already exists`});
     }
-    if( username.length < 6){
-      return res.status(400).json({message: "username must have atleast 6 characters"});
+    if( username.length < 6 || password.length < 6){
+      return res.status(400).json({message: "username  and password must have atleast 6 characters"});
     }
-    if(password.length < 6){
-      return res.status(400).json({message: "password must have atleast 6 characters"});
-    }
-
+    
     const newUser = new Users({username, password});
     await newUser.save();
     return res.status(201).json({ message: "User registered successfully" });
