@@ -34,8 +34,7 @@ const loginUser = async(req,res) =>{
         return res.status(403).json({ message: "Invalid username or password" });
       }
       const token = signToken(existingUser._id);
-      
-      res.status(200).json({message: "user logged in successfully",token});
+      res.status(200).json({message: "user logged in successfully",token,username :existingUser.username});
     }
     catch(error){
       console.error(error);

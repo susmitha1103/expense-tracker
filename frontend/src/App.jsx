@@ -1,16 +1,7 @@
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import Login from './components/Login';
-import Register from './components/Register';
+import AppRoutes from "./routes/AppRoutes";
 
-function App(){
-  return(
-    <Router>
-      <h1>Expense Tracker</h1>
-      <Routes>
-        <Route path= "/register" element = {<Register/>}></Route>
-        <Route path="/login" element={<Login />} />
-      </Routes>
-    </Router>
-  )
+function App() {
+  return <AppRoutes />;
 }
-export default App
+
+export default App;
