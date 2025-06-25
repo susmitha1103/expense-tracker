@@ -22,8 +22,10 @@ const Register = () => {
 
     try {
       const response = await api.post("/api/users/register", formData);
+      localStorage.setItem("token", response.data.token);
+      localStorage.setItem("username", response.data.username);
       setSuccess(response.data.message);
-      setTimeout(() => navigate("/login"), 1500);
+      setTimeout(() => navigate("/dashboard"), 1500);
     } catch (err) {
       setError(err.response?.data?.message || "Signup failed");
     }

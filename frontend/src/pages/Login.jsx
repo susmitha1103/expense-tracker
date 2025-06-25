@@ -15,7 +15,8 @@ const Login = () => {
     try {
       const response = await api.post('/api/users/login', formData);
       localStorage.setItem("token", response.data.token);
-      navigate("/");
+      localStorage.setItem("username", response.data.username);
+      navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.message || "Login failed");
     }
