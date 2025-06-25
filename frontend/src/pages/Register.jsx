@@ -4,7 +4,6 @@ import {
   Box,
   Card,
   CardContent,
-  Typography
 } from "@mui/material";
 import AuthForm from "../components/AuthForm";
 import api from "../services/api";

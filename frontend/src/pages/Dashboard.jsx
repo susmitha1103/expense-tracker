@@ -2,6 +2,7 @@ import { AppBar, Box, CssBaseline, Drawer, IconButton, List, ListItem,ListItemIc
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import LogoutButton from '../components/LogoutButton';
 
 
 const drawerWidth = 240;
@@ -45,6 +46,7 @@ const Dashboard = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Dashboard
           </Typography>
+           <LogoutButton />
         </Toolbar>
       </AppBar>
 
