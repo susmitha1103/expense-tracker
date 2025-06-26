@@ -3,6 +3,11 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutButton from '../components/LogoutButton';
+import { Link } from 'react-router-dom';
+import AddIcon from '@mui/icons-material/Add'; 
+import AssessmentIcon from '@mui/icons-material/Assessment';
+import SettingsIcon from '@mui/icons-material/Settings';
+
 
 
 const drawerWidth = 240;
@@ -14,20 +19,27 @@ const Dashboard = () => {
     setMobileOpen(!mobileOpen);
   };
 
+  const navItems = [
+  { text: "Overview", path: "/dashboard", icon: <DashboardIcon /> },
+  { text: "Add Expense", path: "/add-expense", icon: <AddIcon /> },
+  { text: "Reports", path: "/reports", icon: <AssessmentIcon /> },
+  { text: "Settings", path: "/settings", icon : <SettingsIcon/>}
+];
+
   const drawer = (
-    <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
-      <Typography variant="h6" sx={{ my: 2 }}>
-        Expense Tracker
-      </Typography>
-      <List>
-        {["Overview", "Add Expense", "Reports", "Settings"].map((text) => (
-          <ListItem button key={text}>
-            <ListItemIcon><DashboardIcon /></ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-    </Box>
+    <List>
+  {navItems.map((item) => (
+    <ListItem
+      button
+      key={item.text}
+      component={Link}
+      to={item.path}
+    >
+      <ListItemIcon>{item.icon}</ListItemIcon>
+      <ListItemText primary={item.text} />
+    </ListItem>
+  ))}
+</List>
   );
 
   return (
