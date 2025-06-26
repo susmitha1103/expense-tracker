@@ -1,5 +1,5 @@
 import {useState} from 'react';
-import { TextField,Button,Box,FormControl,InputLabel,Select, MenuItem } from '@mui/material';
+import { TextField,Button,Box,FormControl,InputLabel,Select, MenuItem, Typography } from '@mui/material';
 
 
 const ExpenseForm = ({onSubmit, initialValues={}}) =>{
@@ -14,7 +14,10 @@ const ExpenseForm = ({onSubmit, initialValues={}}) =>{
   }
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%', maxWidth: 400 }}>
+    <Box component="form" onSubmit={handleSubmit} sx={{ width: '100%', maxWidth: 400, paddingLeft: { sm: '550px' } }}>
+      <Typography variant="h4" align="center" gutterBottom color="primary">
+              Add Your Expenses
+            </Typography>
       <TextField
         label="Title"
         value={title}
@@ -45,7 +48,7 @@ const ExpenseForm = ({onSubmit, initialValues={}}) =>{
         </Select>
       </FormControl>
 
-      <Button type="submit" variant="contained">Submit</Button>
+      <Button type="submit" variant="contained"  >Add</Button>
     </Box>
   );
 };

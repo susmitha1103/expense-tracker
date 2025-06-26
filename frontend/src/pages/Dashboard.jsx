@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add'; 
 import AssessmentIcon from '@mui/icons-material/Assessment';
 import SettingsIcon from '@mui/icons-material/Settings';
+import ReceiptIcon from '@mui/icons-material/Receipt'; 
 
 
 
@@ -23,7 +24,8 @@ const Dashboard = () => {
   { text: "Overview", path: "/dashboard", icon: <DashboardIcon /> },
   { text: "Add Expense", path: "/add-expense", icon: <AddIcon /> },
   { text: "Reports", path: "/reports", icon: <AssessmentIcon /> },
-  { text: "Settings", path: "/settings", icon : <SettingsIcon/>}
+  { text: "Settings", path: "/settings", icon : <SettingsIcon/>},
+  { text: "View Expenses", path: "/view-expenses",  icon: <ReceiptIcon />}
 ];
 
   const drawer = (
