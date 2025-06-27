@@ -38,7 +38,6 @@ const getExpenses = async(req,res) =>{
   try{
     const expenses = await Expense.find({user: req.user._id});
     res.status(200).json({message: "fetched expenses successfully",expenses});
-    console.log(expenses);
   }
   catch(error){
     console.error(error);
