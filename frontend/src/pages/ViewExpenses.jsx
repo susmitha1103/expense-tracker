@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
 import {
   Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow, Paper, Typography, Box
+  TableHead, TableRow, Paper, Typography, Box,Button
 } from '@mui/material';
 import api from '../services/api';
+import UpdateExpense from '../pages/UpdateExpense';
 
 const ViewExpenses = () => {
   const [expenses, setExpenses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [total, setTotal] = useState(0);
+  const [selectedExpense, setSelectedExpense] = useState(null);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const fetchExpenses = async () => {
@@ -31,6 +34,23 @@ const ViewExpenses = () => {
     fetchExpenses();
   }, []);
 
+ const handleUpdate = (expense) => {
+  setSelectedExpense(expense);
+  setOpen(true);
+};
+
+  const handleDelete = async (id) => {
+  try {
+    await api.delete(`/api/expenses/delete/${id}`);
+    const updatedList = expenses.filter((e) => e._id !== id);
+    setExpenses(updatedList);
+    const newTotal = updatedList.reduce((acc, curr) => acc + curr.amount, 0);
+    setTotal(newTotal);
+  } catch (err) {
+    console.error("Delete failed", err.message);
+  }
+};
+
   let runningTotal = 0;
 return(
  <Box sx={{ p: 4 }}>
@@ -38,13 +58,27 @@ return(
         Your Expenses
       </Typography>
 
+      {selectedExpense && (
+  <UpdateExpense
+    open={open}
+    onClose={() => setOpen(false)}
+    expense={selectedExpense}
+    onUpdate={(updated) => {
+      setExpenses((prev) =>
+        prev.map((exp) => (exp._id === updated._id ? updated : exp))
+      );
+      setOpen(false);
+    }}
+  />
+)}
+
       <Box
         sx={{
         display: "flex",
         justifyContent: "center",
-        alignItems: "flex-start", // aligns from top
+        alignItems: "flex-start", 
         minHeight: "100vh",  
-        paddingLeft: { sm: '450px' },     // full screen height if needed
+        paddingLeft: { sm: '450px' },     
         p: 2,
         boxSizing: "border-box"
       }}
@@ -67,6 +101,7 @@ return(
                 <TableCell sx={{ color: "white", fontWeight: "bold" }}>Category</TableCell>
                 <TableCell sx={{ color: "white", fontWeight: "bold" }}>Date</TableCell>
                 <TableCell sx={{ color: "white", fontWeight: "bold" }}>Cumulative Total</TableCell>
+                 <TableCell sx={{ color: "white", fontWeight: "bold" }}>Actions</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -79,6 +114,25 @@ return(
                     <TableCell>{exp.category}</TableCell>
                     <TableCell>{new Date(exp.date).toLocaleDateString()}</TableCell>
                     <TableCell>₹{runningTotal.toLocaleString()}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="primary"
+                        onClick={() => handleUpdate(exp)}
+                      >
+                        Update
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        color="error"
+                        sx={{ ml: 1 }}
+                        onClick={() => handleDelete(exp._id)}
+                      >
+                        Delete
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -90,6 +144,27 @@ return(
           </Table>
         </TableContainer>
       </Box>
+      {selectedExpense && (
+  <UpdateExpense
+    open={open}
+    onClose={() => setOpen(false)}
+    expense={selectedExpense}
+    onUpdate={(updatedExpense) => {
+      setExpenses((prev) =>
+        prev.map((exp) =>
+          exp._id === updatedExpense._id ? updatedExpense : exp
+        )
+      );
+
+      const newTotal = expenses.reduce((acc, exp) =>
+        exp._id === updatedExpense._id
+          ? acc + updatedExpense.amount
+          : acc + exp.amount,
+      0);
+      setTotal(newTotal);
+    }}
+  />
+)}
     </Box>
   );
 };
