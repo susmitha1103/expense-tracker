@@ -108,21 +108,27 @@ const getExpensesByCategory = async(req,res) =>{
   const validCategories = ["food", "travel", "shopping", "stationery", "groceries", "others"];
 
   if(!category){
+    console.log("Category query param missing");
     return res.status(400).json({message:"category is required in the query string"});
   }
 
   if(!validCategories.includes(category)){
+    console.log("Invalid category received:", category);
     return res.status(400).json({message:"Invalid category. Please select from the following list",validCategories});
   }
 
   try{
   const expenseByCategory = await Expense.find({ category: category, user: req.user._id });
   if (expenseByCategory.length === 0) {
-  return res.status(200).json({ message: "You have no expenses in that category." });
+  return res.status(200).json({ 
+    expenses: [],
+    totalAmount: 0,
+    message: "You have no expenses in that category." 
+  });
 }
 
  res.status(200).json({
-  expenseByCategory,
+  expenses:expenseByCategory,
   totalAmount: expenseByCategory.reduce((sum, e) => sum + e.amount, 0)
 });
 
@@ -154,49 +160,75 @@ const getTotalExpenses = async(req,res) =>{
   }
 };
 
-const getMonthlyExpenses = async(req,res) =>{
-  try{
-    const monthlyExpenses = await Expense.aggregate([
+const getAllCategoryExpenses = async (req, res) => {
+  try {
+    const categoryExpenses = await Expense.aggregate([
       {
-        $match:{user:req.user._id}
+        $match: { user: req.user._id }
       },
       {
-        $group:{
-          _id:{
-            month:{
-              $month: "$date"
-            },
-            year:{
-              $year: "$date"
-            }
+        $group: {
+          _id: "$category",
+          totalAmount: { $sum: "$amount" }
+        }
+      }
+    ]);
+    console.log("Raw category aggregation:", categoryExpenses);
+
+    res.status(200).json({ categoryExpenses });
+  } catch (error) {
+    console.error("Error fetching category expenses", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+const getMonthlyExpenses = async (req, res) => {
+  try {
+    const raw = await Expense.aggregate([
+      { $match: { user: req.user._id } },
+      {
+        $group: {
+          _id: {
+            month: { $month: "$date" },
+            year: { $year: "$date" }
           },
-          totalAmount:{$sum: "$amount"}
+          totalAmount: { $sum: "$amount" }
         }
       },
-        {
-        $sort:{
+      {
+        $sort: {
           "_id.year": -1,
           "_id.month": -1
         }
-    }])
+      }
+    ]);
+
     const monthNames = [
-  "January", "February", "March", "April", "May", "June",
-  "July", "August", "September", "October", "November", "December"
-];
+      'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+      'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
+    ];
 
-const formattedExpenses = monthlyExpenses.map(item => ({
-  month: `${monthNames[item._id.month - 1]} ${item._id.year}`,
-  totalAmount: item.totalAmount
-}));
+    const fullYear = Array.from({ length: 12 }, (_, i) => ({
+      month: monthNames[i],
+      totalAmount: 0
+    }));
 
-    res.status(201).json({message: "Monthly expenses: ",formattedExpenses})
+    raw.forEach((item) => {
+      if (item._id.year === 2025) {
+        const index = item._id.month - 1;
+        fullYear[index].totalAmount = item.totalAmount;
+      }
+    });
+
+    res.status(200).json({ monthlyExpenses: fullYear });
+  } catch (error) {
+    console.error("Error calculating expenses:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
-  catch(error){
-    console.error("Error calculaitng expenses ",error);
-    res.status(500).json({message:"Interval server error"});
-  }
-}
+};
+
+module.exports = { getMonthlyExpenses };
 
 
-
-module.exports = {addExpense,getExpenses,updateExpenses,deleteExpenses,getExpensesByCategory,getTotalExpenses,getMonthlyExpenses};
+module.exports = {addExpense,getExpenses,updateExpenses,deleteExpenses
+  ,getExpensesByCategory,getTotalExpenses,getMonthlyExpenses,getAllCategoryExpenses};

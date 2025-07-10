@@ -4,6 +4,7 @@ import Register from "../pages/Register";
 import Dashboard from "../pages/Dashboard";
 import AddExpense from "../pages/AddExpense"
 import ViewExpenses from "../pages/ViewExpenses";
+import AnalyticsPage from "../pages/AnalyticsPage";
 
 const AppRoutes = () => {
   return (
@@ -14,6 +15,7 @@ const AppRoutes = () => {
       <Route path = "/dashboard" element={<Dashboard/>}/>
       <Route path="/add-expense" element={<AddExpense />} />
       <Route path="/view-expenses" element={<ViewExpenses/>}/>
+      <Route path="/reports" element = {<AnalyticsPage/>}/>
     </Routes>
     </Router>
   );

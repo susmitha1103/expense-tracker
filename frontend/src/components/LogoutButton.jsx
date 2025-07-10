@@ -14,7 +14,7 @@ const LogoutButton = () => {
   }
 
   return(
-    <Button variant="contained" onClick = {handleLogout} color='secondary'>Logout</Button>
+    <Button variant="contained" onClick = {handleLogout} >Logout</Button>
   );
 }
 

@@ -14,7 +14,7 @@ import { toast } from 'react-toastify';
       setForm({ ...expense });
     }
   }, [expense]);
-  console.log("loaded expense:",expense);
+  
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
