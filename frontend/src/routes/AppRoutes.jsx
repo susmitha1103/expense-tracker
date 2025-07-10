@@ -5,6 +5,7 @@ import Dashboard from "../pages/Dashboard";
 import AddExpense from "../pages/AddExpense"
 import ViewExpenses from "../pages/ViewExpenses";
 import AnalyticsPage from "../pages/AnalyticsPage";
+import AddIncome from "../pages/AddIncome";
 
 const AppRoutes = () => {
   return (
@@ -16,6 +17,7 @@ const AppRoutes = () => {
       <Route path="/add-expense" element={<AddExpense />} />
       <Route path="/view-expenses" element={<ViewExpenses/>}/>
       <Route path="/reports" element = {<AnalyticsPage/>}/>
+      <Route path = "/add-income" element = {<AddIncome/>}/>
     </Routes>
     </Router>
   );
