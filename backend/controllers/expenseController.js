@@ -173,8 +173,6 @@ const getAllCategoryExpenses = async (req, res) => {
         }
       }
     ]);
-    console.log("Raw category aggregation:", categoryExpenses);
-
     res.status(200).json({ categoryExpenses });
   } catch (error) {
     console.error("Error fetching category expenses", error);
@@ -227,7 +225,7 @@ const getMonthlyExpenses = async (req, res) => {
   }
 };
 
-module.exports = { getMonthlyExpenses };
+
 
 
 module.exports = {addExpense,getExpenses,updateExpenses,deleteExpenses

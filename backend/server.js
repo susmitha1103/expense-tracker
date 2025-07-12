@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
+const incomeRoutes = require('./routes/incomeRoutes');
 
 dotenv.config();
 connectDB();
@@ -19,6 +20,7 @@ app.use(cors({
 
 app.use('/api/users', userRoutes);
 app.use('/api/expenses', expenseRoutes);
+app.use('/api/income', incomeRoutes);
 
 
 
@@ -28,6 +30,6 @@ app.listen(PORT, () => {
 });
 
 app.use((req, res, next) => {
-  console.log(`❌ Route not found: ${req.method} ${req.originalUrl}`);
+  console.log(`Route not found: ${req.method} ${req.originalUrl}`);
   res.status(404).json({ message: 'Route not found' });
 });
