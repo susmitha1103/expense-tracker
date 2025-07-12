@@ -37,7 +37,7 @@ const getAllIncomes = async (req, res) => {
 };
 
  const getTotalIncome = async (req, res) => {
-  console.log("reached getTotalIncome method");
+
   try {
     const result = await Income.aggregate([
       { $match: { user: req.user._id } },
@@ -62,7 +62,8 @@ const getIncomeBySource = async(req,res) =>{
         },
       },
     ]);
-    res.status(200).json({ incomeBySource });
+    res.status(200).json({ incomeSources: incomeBySource });
+
   } catch (err) {
     console.error("Error fetching income by source", err);
     res.status(500).json({ message: "Server error" });
