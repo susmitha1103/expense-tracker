@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const { addExpense, getExpenses, updateExpenses, deleteExpenses, getExpensesByCategory, getTotalExpenses, getMonthlyExpenses, getAllCategoryExpenses
+const { addExpense, getExpenses, updateExpenses, deleteExpenses, getExpensesByCategory, getTotalExpenses, getMonthlyExpenses,
+   getAllCategoryExpenses, getCurrentMonthExpense
 } = require('../controllers/expenseController');
 const { verifyToken } = require('../middleware/protect');
 
@@ -12,6 +13,8 @@ router.get('/category',verifyToken,getExpensesByCategory);
 router.get('/total',verifyToken,getTotalExpenses);
 router.get('/monthlyTotal',verifyToken,getMonthlyExpenses);
 router.get('/category-wise',verifyToken, getAllCategoryExpenses);
+router.get('/current-month-total', verifyToken, getCurrentMonthExpense);
+
 
 
 

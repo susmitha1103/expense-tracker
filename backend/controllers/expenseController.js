@@ -1,4 +1,5 @@
 const Expense = require('../models/expenses');
+const moment = require('moment');
 
 const addExpense = async(req,res) =>{
 
@@ -225,8 +226,30 @@ const getMonthlyExpenses = async (req, res) => {
   }
 };
 
+const getCurrentMonthExpense = async (req, res) => {
+  const currentMonth = moment().format('YYYY-MM');
+
+  try {
+    const expenses = await Expense.find({
+      user: req.user._id,
+      date: {
+        $gte: moment(currentMonth).startOf('month').toDate(),
+        $lte: moment(currentMonth).endOf('month').toDate()
+      }
+    });
+
+    const total = expenses.reduce((sum, item) => sum + item.amount, 0);
+
+    res.status(200).json({ total: total });
+  } catch (err) {
+    console.error("Error fetching current month expenses:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
 
 
 
 module.exports = {addExpense,getExpenses,updateExpenses,deleteExpenses
-  ,getExpensesByCategory,getTotalExpenses,getMonthlyExpenses,getAllCategoryExpenses};
+  ,getExpensesByCategory,getTotalExpenses,getMonthlyExpenses,getAllCategoryExpenses, getCurrentMonthExpense};
