@@ -8,7 +8,7 @@ const createIncome = async (req, res) => {
     return res.status(400).json({ message: "Invalid income amount. Must be a positive number." });
   }
    
-  const validSources = ["salary, freelance, gift, investments, rent, others"];
+  const validSources = ["salary", "freelance", "gift", "investment", "rent", "others"];
   if (!source || !validSources.includes(source.toLowerCase())) {
     return res.status(400).json({ message: "Invalid income source. select from the dropdown." });
   }
@@ -51,5 +51,24 @@ const getAllIncomes = async (req, res) => {
   }
 };
 
+const getIncomeBySource = async(req,res) =>{
+  try {
+    const incomeBySource = await Income.aggregate([
+      { $match: { user: req.user._id } },
+      {
+        $group: {
+          _id: "$source",
+          totalAmount: { $sum: "$amount" },
+        },
+      },
+    ]);
+    res.status(200).json({ incomeBySource });
+  } catch (err) {
+    console.error("Error fetching income by source", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
-module.exports = {createIncome,getAllIncomes, getTotalIncome};
+
+
+module.exports = {createIncome,getAllIncomes, getTotalIncome, getIncomeBySource};
