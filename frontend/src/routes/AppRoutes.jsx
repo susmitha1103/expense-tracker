@@ -7,13 +7,18 @@ import ViewExpenses from "../pages/ViewExpenses";
 import AnalyticsPage from "../pages/AnalyticsPage";
 import AddIncome from "../pages/AddIncome";
 
+const PrivateRoute = ({ children }) => {
+  const token = localStorage.getItem("token");
+  return token ? children : <Navigate to="/" />;
+};
+
 
 const AppRoutes = () => {
   return (
     <Router>
     <Routes>
       <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route path="/signup" element={<Register />} />
       <Route path = "/dashboard" element={<Dashboard/>}/>
       <Route path="/add-expense" element={<AddExpense />} />
       <Route path="/view-expenses" element={<ViewExpenses/>}/>
