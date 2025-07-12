@@ -18,7 +18,7 @@ const AddIncome = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post('/api/income', {
+      await api.post('/api/income/createIncome', {
         amount,
         source: source.toLowerCase(), 
       });
@@ -64,7 +64,7 @@ const AddIncome = () => {
             fullWidth
             required
           >
-            {["Salary", "Freelance", "Gift", "Investments", "Rent", "Others"].map((s) => (
+            {["Salary", "Freelance", "Gift", "Investment", "Rent", "Others"].map((s) => (
               <MenuItem key={s} value={s}>
                 {s}
               </MenuItem>
