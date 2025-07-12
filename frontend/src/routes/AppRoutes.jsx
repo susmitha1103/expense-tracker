@@ -7,6 +7,7 @@ import ViewExpenses from "../pages/ViewExpenses";
 import AnalyticsPage from "../pages/AnalyticsPage";
 import AddIncome from "../pages/AddIncome";
 
+
 const AppRoutes = () => {
   return (
     <Router>

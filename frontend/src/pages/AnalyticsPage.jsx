@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Box, Typography, Grid, Paper } from '@mui/material';
 import { BarChart } from '@mui/x-charts/BarChart';
 import { PieChart } from '@mui/x-charts/PieChart';
+import SummaryCards from '../components/SummaryCards';
 import api from '../services/api';
 
 const AnalyticsPage = () => {
@@ -52,6 +53,9 @@ const AnalyticsPage = () => {
   }, []);
 
   return (
+    <>
+    <SummaryCards/>
+
     <Box sx={{ px: { xs: 2, md: 6 }, py: 4 }}>
       <Typography
         variant="h4"
@@ -94,6 +98,7 @@ const AnalyticsPage = () => {
         </Grid>
       </Grid>
     </Box>
+    </>
   );
 };
 

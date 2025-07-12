@@ -55,6 +55,7 @@ const AuthForm = ({title, formData, setFormData, error, onSubmit}) =>{
               </InputAdornment>
             }
             label="Password"
+            required
           />
         </FormControl>
         <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>

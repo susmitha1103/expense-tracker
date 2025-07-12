@@ -1,5 +1,14 @@
 import { useState } from 'react';
-import { Box, TextField, Button, Typography, Paper } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  InputLabel,
+  MenuItem,
+  Select,
+} from '@mui/material';
 import api from '../services/api';
 
 const AddIncome = () => {
@@ -9,7 +18,10 @@ const AddIncome = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await api.post('/api/income', { amount, source });
+      await api.post('/api/income', {
+        amount,
+        source: source.toLowerCase(), 
+      });
       alert('Income added');
       setAmount('');
       setSource('');
@@ -44,15 +56,22 @@ const AddIncome = () => {
             margin="normal"
             required
           />
-          <TextField
-            label="Source"
+          <InputLabel id="income-source-label">Source</InputLabel>
+          <Select
+            labelId="income-source-label"
             value={source}
             onChange={(e) => setSource(e.target.value)}
             fullWidth
-            margin="normal"
             required
-          />
-          <Button variant="contained" color="primary" type="submit" fullWidth>
+          >
+            {["Salary", "Freelance", "Gift", "Investments", "Rent", "Others"].map((s) => (
+              <MenuItem key={s} value={s}>
+                {s}
+              </MenuItem>
+            ))}
+          </Select>
+
+          <Button variant="contained" color="primary" type="submit" fullWidth sx={{ mt: 2 }}>
             Add Income
           </Button>
         </form>
