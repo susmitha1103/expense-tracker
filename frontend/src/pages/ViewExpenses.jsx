@@ -99,7 +99,7 @@ const ViewExpenses = () => {
           <Table>
             <TableHead>
               <TableRow sx={{ backgroundColor: "#1976d2" }}>
-                <TableCell sx={{ color: "white", fontWeight: "bold" }}>Title</TableCell>
+                <TableCell sx={{ color: "white", fontWeight: "bold" }}>Description</TableCell>
                 <TableCell sx={{ color: "white", fontWeight: "bold" }}>Amount</TableCell>
                 <TableCell sx={{ color: "white", fontWeight: "bold" }}>Category</TableCell>
                 <TableCell sx={{ color: "white", fontWeight: "bold" }}>Date</TableCell>
@@ -113,7 +113,7 @@ const ViewExpenses = () => {
                   runningTotal += exp.amount;
                   return (
                     <TableRow key={exp._id}>
-                      <TableCell>{exp.title}</TableCell>
+                      <TableCell>{exp.description}</TableCell>
                       <TableCell>₹{exp.amount.toLocaleString()}</TableCell>
                       <TableCell>{exp.category}</TableCell>
                       <TableCell>{new Date(exp.date).toLocaleDateString()}</TableCell>

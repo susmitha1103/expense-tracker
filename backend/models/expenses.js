@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const expenseSchema = new mongoose.Schema({
 
-  title:{
+  description:{
     type: String,
     required: true
   },
@@ -12,8 +12,9 @@ const expenseSchema = new mongoose.Schema({
   },
   category:{
     type: String,
-    enum: ["food", "travel", "shopping", "stationery", "groceries", "others"],
-    default: "Others",
+    enum: ["housing & utilities", "healthcare", "shopping", "education & stationery",
+       "entertainment", "emis & subscriptions", "miscellaneous"],
+    default: "miscellaneous",
     required: true
   },
   date:{

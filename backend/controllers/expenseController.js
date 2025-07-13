@@ -4,20 +4,21 @@ const moment = require('moment');
 const addExpense = async(req,res) =>{
 
   
-  const{title,amount, category, date,note} = req.body;
-  const validCategories = ["food", "travel", "shopping", "stationery", "groceries", "others"];
+  const{description,amount, category, date,note} = req.body;
+  const validCategories = ["housing & utilities",  "healthcare",  "shopping", "education & stationery",
+       "entertainment", "emis & subscriptions", "miscellaneous"];
 
   if(!validCategories.includes(category)){
     return res.status(400).json({message: "Invalid category, please select from predefined options"});
   }
 
-  if(!title || !amount || !category ){
+  if(!description || !amount || !category ){
     return res.status(400).json({message: "missing required fields"});
   }
 
   try{
     const expense = await Expense.create({ 
-  title, 
+  description, 
   amount, 
   category, 
   date, 
@@ -56,9 +57,9 @@ const updateExpenses = async(req,res) =>{
     return res.staus(404).json({message: "Expense not found or unauthorized"});
   }
   try{
-  const{title, amount, category, date, note} = req.body;
+  const{description, amount, category, date, note} = req.body;
 
-  if(title)expense.title = title;
+  if(description)expense.description = description;
   if(amount)expense.amount = amount;
   if(category)expense.category = category;
   if(date)expense.date = date;
@@ -106,7 +107,8 @@ const deleteExpenses = async (req, res) => {
 const getExpensesByCategory = async(req,res) =>{
 
   const category = req.query.name?.trim().toLowerCase();
-  const validCategories = ["food", "travel", "shopping", "stationery", "groceries", "others"];
+  const validCategories = ["housing & utilities", "healthcare", "shopping", "education & stationery",
+       "entertainment", "emis & subscriptions", "miscellaneous"];
 
   if(!category){
     console.log("Category query param missing");

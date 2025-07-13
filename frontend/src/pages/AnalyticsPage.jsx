@@ -24,7 +24,8 @@ const AnalyticsPage = () => {
         setMonthlyData(monthly.data.monthlyExpenses.map(e => e.totalAmount));
         setMonthLabels(monthly.data.monthlyExpenses.map(e => e.month));
 
-        const fixedOrder = ["Food", "Travel", "Shopping", "Stationery", "Groceries", "Others"];
+        const fixedOrder = ["housing & utilities",  "healthcare", "shopping", "education & stationery",
+       "entertainment", "emis & subscriptions", "miscellaneous"];
         const catRaw = category.data.categoryExpenses || [];
         const catFormatted = fixedOrder.map((cat, idx) => {
           const match = catRaw.find(item => item._id.toLowerCase() === cat.toLowerCase());

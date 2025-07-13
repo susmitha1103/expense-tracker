@@ -4,13 +4,14 @@ import { TextField,Button,Box,FormControl,InputLabel,Select, MenuItem, Typograph
 
 const ExpenseForm = ({onSubmit, initialValues={}}) =>{
   
-  const[title, setTitle]= useState(initialValues.title || '');
-  const[amount, setAmount] = useState(initialValues.amount || '');
+  
   const[category,setCategory] = useState(initialValues.category || '');
+  const[amount, setAmount] = useState(initialValues.amount || '');
+  const[description, setDescription]= useState(initialValues.description || '');
 
   const handleSubmit = (e) =>{
     e.preventDefault();
-    onSubmit({title, amount, category});
+    onSubmit({category, amount, description});
   }
 
   return (
@@ -19,9 +20,9 @@ const ExpenseForm = ({onSubmit, initialValues={}}) =>{
               Add Your Expenses
             </Typography>
       <TextField
-        label="Title"
-        value={title}
-        onChange={(e) => setTitle(e.target.value)}
+        label="Description"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
         fullWidth
         margin="normal"
       />
@@ -42,7 +43,8 @@ const ExpenseForm = ({onSubmit, initialValues={}}) =>{
           onChange={(e) => setCategory(e.target.value)}
           label="Category"
         >
-          {["food", "travel", "shopping", "stationery", "groceries", "others"].map((cat) => (
+          {["housing & utilities",  "healthcare", "shopping", "education & stationery",
+       "entertainment", "emis & subscriptions", "miscellaneous"].map((cat) => (
             <MenuItem key={cat} value={cat}>{cat}</MenuItem>
           ))}
         </Select>

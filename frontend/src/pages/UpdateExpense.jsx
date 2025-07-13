@@ -37,8 +37,8 @@ import { toast } from 'react-toastify';
       <DialogTitle>Update Expense</DialogTitle>
       <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
         <TextField
-          label="Title"
-          name="title"
+          label="Description"
+          name="description"
           value={form.title}
           onChange={handleChange}
         />
@@ -57,12 +57,13 @@ import { toast } from 'react-toastify';
            label="Category"
            onChange={handleChange}
           >
-          <MenuItem value="food">Food</MenuItem>
-          <MenuItem value="travel">Travel</MenuItem>
+          <MenuItem value="housing & utilities">Housing and Utilities</MenuItem>
           <MenuItem value="shopping">Shopping</MenuItem>
-          <MenuItem value="stationery">Stationery</MenuItem>
-          <MenuItem value="groceries">Groceries</MenuItem>
-          <MenuItem value="others">Others</MenuItem>
+          <MenuItem value="education & stationery">Education and Stationery</MenuItem>
+          <MenuItem value="healthcare">Healthcare</MenuItem>
+          <MenuItem value="entertainment">Entertainment</MenuItem>
+          <MenuItem value="emis & subscription">EMIs and Subscription</MenuItem>
+          <MenuItem value="miscellaneous">Miscellaneous</MenuItem>
           </Select>
         </FormControl>
         <TextField
