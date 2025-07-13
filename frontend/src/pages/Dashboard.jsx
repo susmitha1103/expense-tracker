@@ -4,10 +4,10 @@ import { useState } from "react";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import LogoutButton from '../components/LogoutButton';
 import { Link } from 'react-router-dom';
-import AddIcon from '@mui/icons-material/Add'; 
-import ReceiptIcon from '@mui/icons-material/Receipt'; 
-import SavingsIcon from '@mui/icons-material/Savings';
+import AddIcon from '@mui/icons-material/Add';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import AnalyticsPage from './AnalyticsPage';
+
 
 
 const drawerWidth = 240;
@@ -20,13 +20,13 @@ const Dashboard = () => {
   };
 
   const navItems = [
-   
+
 
     { text: "Overview", path: "/dashboard", icon: <DashboardIcon /> },
     { text: "Add Expense", path: "/add-expense", icon: <AddIcon />, color: 'red' },
     { text: "Add Income", path: "/add-income", icon: <AddIcon />, color: 'green' },
     { text: "View Expenses", path: "/view-expenses", icon: <ReceiptIcon /> },
-    {text: "Set Budget", path: "/set-budget", icon :<SavingsIcon/> }
+    
   ];
 
   const drawer = (
@@ -104,6 +104,12 @@ const Dashboard = () => {
         <Typography variant="body1" gutterBottom>
           Here's your analytics overview:
         </Typography>
+
+        
+
+        <Box sx={{ width: '100%', mt: 4 }}>
+    
+        </Box>
         <AnalyticsPage />
       </Box>
     </Box>

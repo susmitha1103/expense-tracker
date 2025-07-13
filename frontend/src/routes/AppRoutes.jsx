@@ -6,7 +6,7 @@ import AddExpense from "../pages/AddExpense"
 import ViewExpenses from "../pages/ViewExpenses";
 import AnalyticsPage from "../pages/AnalyticsPage";
 import AddIncome from "../pages/AddIncome";
-import BudgetSection  from "../components/BudgetSection";
+
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -25,7 +25,6 @@ const AppRoutes = () => {
       <Route path="/view-expenses" element={<ViewExpenses/>}/>
       <Route path="/reports" element = {<AnalyticsPage/>}/>
       <Route path = "/add-income" element = {<AddIncome/>}/>
-      <Route path = "/set-budget" element = {<BudgetSection/>}/>
     </Routes>
     </Router>
   );
