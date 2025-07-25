@@ -110,7 +110,23 @@ const getMonthlyIncome = async (req, res) => {
   }
 };
 
+const updateIncome = async (req, res) => {
+  try {
+    const income = await Income.findOne({ _id: req.params.id, user: req.user._id });
+    if (!income) return res.status(404).json({ message: "Income not found or unauthorized" });
+
+    const { amount, source, date } = req.body;
+    if (amount) income.amount = amount;
+    if (source) income.source = source;
+    if (date) income.date = date;
+
+    const updatedIncome = await income.save();
+    res.status(200).json({ message: "Income updated successfully", income: updatedIncome });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
 
 
 
-module.exports = {createIncome,getAllIncomes, getTotalIncome, getIncomeBySource,deleteIncome,getMonthlyIncome};
+module.exports = {createIncome,getAllIncomes, getTotalIncome, getIncomeBySource,deleteIncome,getMonthlyIncome, updateIncome};

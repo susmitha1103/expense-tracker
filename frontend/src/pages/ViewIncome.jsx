@@ -4,15 +4,19 @@ import {
   TableHead, TableRow, Paper, Typography, Box, Button, Stack,
   Dialog, DialogTitle, DialogActions, DialogContentText
 } from '@mui/material';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import api from '../services/api';
+import UpdateIncome from '../components/UpdateIncome';
 
 const ViewIncome = () => {
   const [incomeList, setIncomeList] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [total, setTotal] = useState(0);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [editOpen, setEditOpen] = useState(false);
+  const [editData, setEditData] = useState({ id: '', source: '', amount: '' });
 
   const fetchIncomeData = async () => {
     setLoading(true);
@@ -20,13 +24,10 @@ const ViewIncome = () => {
       const res = await api.get('/api/income/incomes');
       const incomes = res.data.incomes || [];
       setIncomeList(incomes);
-
       const sum = incomes.reduce((acc, curr) => acc + curr.amount, 0);
       setTotal(sum);
-      setError('');
     } catch (err) {
-      console.error("Error fetching income", err.message);
-      setError('Failed to load income');
+      toast.error("Failed to load income");
     } finally {
       setLoading(false);
     }
@@ -44,13 +45,23 @@ const ViewIncome = () => {
   const handleDelete = async () => {
     try {
       await api.delete(`/api/income/delete/${deleteId}`);
+      toast.success(" Income deleted");
       fetchIncomeData();
     } catch (err) {
-      console.error("Delete income failed", err.message);
+      toast.error("Delete failed");
     } finally {
       setConfirmOpen(false);
       setDeleteId(null);
     }
+  };
+
+  const openEditDialog = (income) => {
+    setEditData({
+      id: income._id,
+      source: income.source,
+      amount: income.amount
+    });
+    setEditOpen(true);
   };
 
   return (
@@ -119,15 +130,25 @@ const ViewIncome = () => {
                           : "—"}
                       </TableCell>
                       <TableCell>
-                        <Button
-                          variant="outlined"
-                          color="error"
-                          size="small"
-                          sx={{ borderRadius: 2, textTransform: 'none' }}
-                          onClick={() => confirmDelete(inc._id)}
-                        >
-                          Delete
-                        </Button>
+                        <Stack direction="row" spacing={1}>
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            sx={{ borderRadius: 2, textTransform: 'none' }}
+                            onClick={() => openEditDialog(inc)}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            color="error"
+                            size="small"
+                            sx={{ borderRadius: 2, textTransform: 'none' }}
+                            onClick={() => confirmDelete(inc._id)}
+                          >
+                            Delete
+                          </Button>
+                        </Stack>
                       </TableCell>
                     </TableRow>
                   ))
@@ -144,22 +165,34 @@ const ViewIncome = () => {
                   </TableRow>
                 )}
               </TableBody>
-
             </Table>
           </TableContainer>
         </Box>
 
         <Dialog open={confirmOpen} onClose={() => setConfirmOpen(false)}>
-          <DialogTitle>Are you sure?</DialogTitle>
+          <DialogTitle>Confirm Delete</DialogTitle>
           <DialogContentText sx={{ px: 3 }}>
-            This will permanently delete the selected income entry. You cannot undo this action.
+            Are you sure you want to delete this income entry?
           </DialogContentText>
           <DialogActions>
-            <Button onClick={() => setConfirmOpen(false)} color="primary">Cancel</Button>
-            <Button onClick={handleDelete} color="error" autoFocus>Delete</Button>
+            <Button onClick={() => setConfirmOpen(false)}>Cancel</Button>
+            <Button onClick={handleDelete} color="error">Delete</Button>
           </DialogActions>
         </Dialog>
+
+        <UpdateIncome
+          open={editOpen}
+          onClose={() => setEditOpen(false)}
+          income={incomeList.find((i) => i._id === editData.id)}
+          onUpdate={() => {
+            fetchIncomeData();
+            setEditOpen(false);
+            toast.success("✅ Income updated successfully");
+          }}
+        />
       </Box>
+
+      <ToastContainer position="top-right" autoClose={3000} />
     </Box>
   );
 };
