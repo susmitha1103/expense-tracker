@@ -1,10 +1,20 @@
+import { useEffect } from "react";
 import { useLocation, Navigate } from "react-router-dom";
 import { Box, Typography, Button } from "@mui/material";
+import { toast } from "react-toastify";
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem("token");
+  const username = localStorage.getItem("username");
+  const location = useLocation();
 
-  if (!token) {
+  useEffect(() => {
+    if (!token || !username) {
+      toast.error("Session expired. Please login again.");
+    }
+  }, []);
+
+  if (!token || !username) {
     return (
       <Box
         height="100vh"
@@ -32,5 +42,6 @@ const PrivateRoute = ({ children }) => {
 
   return children;
 };
+
 
 export default PrivateRoute;

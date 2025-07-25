@@ -10,23 +10,31 @@ import {
   Select,
 } from '@mui/material';
 import api from '../services/api';
+import { toast } from 'react-toastify';
 
 const AddIncome = () => {
   const [amount, setAmount] = useState('');
   const [source, setSource] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
+
     try {
-      await api.post('/api/income/createIncome', {
+      const response = await api.post('/api/income/createIncome', {
         amount,
-        source: source.toLowerCase(), 
+        source: source.toLowerCase(),
       });
-      alert('Income added');
+
+      toast.success(response.data.message || 'Income added successfully');
       setAmount('');
       setSource('');
     } catch (err) {
-      console.error("Failed to add income:", err);
+      toast.error(err?.response?.data?.message || 'Failed to add income');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -71,8 +79,15 @@ const AddIncome = () => {
             ))}
           </Select>
 
-          <Button variant="contained" color="primary" type="submit" fullWidth sx={{ mt: 2 }}>
-            Add Income
+          <Button
+            variant="contained"
+            color="primary"
+            type="submit"
+            fullWidth
+            sx={{ mt: 2 }}
+            disabled={loading}
+          >
+            {loading ? 'Adding...' : 'Add Income'}
           </Button>
         </form>
       </Paper>

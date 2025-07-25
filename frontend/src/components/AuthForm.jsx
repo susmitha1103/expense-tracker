@@ -39,7 +39,9 @@ const AuthForm = ({ title, formData, setFormData, error, success, onSubmit }) =>
           fullWidth
           margin="normal"
           required
+          autoComplete={title === "Login" ? "username" : "new-username"}
         />
+
         <FormControl fullWidth variant="outlined" margin="normal">
           <InputLabel htmlFor="password">Password</InputLabel>
           <OutlinedInput
@@ -57,6 +59,7 @@ const AuthForm = ({ title, formData, setFormData, error, success, onSubmit }) =>
             }
             label="Password"
             required
+            autoComplete={title === "Login" ? "current-password" : "new-password"}
           />
         </FormControl>
 

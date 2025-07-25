@@ -20,7 +20,6 @@ const registerUser = async(req,res) =>{
     return res.status(201).json({ message: "User registered successfully",token, username: newUser.username });
   }
   catch(error){
-    console.error(error);
     return res.status(500).json({ message: "Server error" });
   } 
 };
@@ -38,7 +37,6 @@ const loginUser = async(req,res) =>{
       res.status(200).json({message: "user logged in successfully",token,username :existingUser.username});
     }
     catch(error){
-      console.error(error);
       return res.status(500).json({message: "server error"});
     }
   };

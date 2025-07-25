@@ -3,22 +3,24 @@ import AuthForm from "../components/AuthForm";
 import { Box, Card, CardContent } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import api from '../services/api';
+import { toast } from "react-toastify";
 
 const Login = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
-  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
+
     try {
       const response = await api.post('/api/users/login', formData);
       localStorage.setItem("token", response.data.token);
       localStorage.setItem("username", response.data.username);
+      toast.success("Login successful!");
       navigate("/dashboard");
     } catch (err) {
-      setError(err.response?.data?.message || "Login failed");
+      const message = err.response?.data?.message || "Login failed";
+      toast.error(message);
     }
   };
 
@@ -37,7 +39,6 @@ const Login = () => {
             title="Login"
             formData={formData}
             setFormData={setFormData}
-            error={error}
             onSubmit={handleSubmit}
           />
         </CardContent>

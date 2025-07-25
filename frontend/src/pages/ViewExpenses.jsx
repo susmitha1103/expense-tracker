@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import {
   Table, TableBody, TableCell, TableContainer,
-  TableHead, TableRow, Paper, Typography, Box, Button, Stack, Dialog, DialogTitle, DialogActions, DialogContentText
+  TableHead, TableRow, Paper, Typography, Box, Button, Stack, Dialog, DialogTitle, DialogActions, DialogContentText,
+  Snackbar, Alert
 } from '@mui/material';
 import api from '../services/api';
 import UpdateExpense from '../pages/UpdateExpense';
@@ -15,18 +16,18 @@ const ViewExpenses = () => {
   const [open, setOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
+  const [toast, setToast] = useState({ open: false, message: '', severity: 'error' });
 
   useEffect(() => {
     const fetchExpenses = async () => {
       try {
         const res = await api.get('/api/expenses/get');
         setExpenses(res.data.expenses);
-
         const sum = res.data.expenses.reduce((acc, curr) => acc + curr.amount, 0);
         setTotal(sum);
       } catch (err) {
-        console.log("error fetching expenses from backend to frontend", err.message);
         setError('Failed to load expenses');
+        setToast({ open: true, message: 'Failed to fetch expenses', severity: 'error' });
       } finally {
         setLoading(false);
       }
@@ -52,8 +53,9 @@ const ViewExpenses = () => {
       setExpenses(updatedList);
       const newTotal = updatedList.reduce((acc, curr) => acc + curr.amount, 0);
       setTotal(newTotal);
+      setToast({ open: true, message: 'Expense deleted successfully', severity: 'success' });
     } catch (err) {
-      console.error("Delete failed", err.message);
+      setToast({ open: true, message: 'Delete failed', severity: 'error' });
     } finally {
       setConfirmOpen(false);
       setDeleteId(null);
@@ -61,6 +63,7 @@ const ViewExpenses = () => {
   };
 
   let runningTotal = 0;
+
   return (
     <Box
       sx={{
@@ -190,27 +193,6 @@ const ViewExpenses = () => {
           </TableContainer>
         </Box>
 
-        {selectedExpense && (
-          <UpdateExpense
-            open={open}
-            onClose={() => setOpen(false)}
-            expense={selectedExpense}
-            onUpdate={(updatedExpense) => {
-              setExpenses((prev) =>
-                prev.map((exp) =>
-                  exp._id === updatedExpense._id ? updatedExpense : exp
-                )
-              );
-
-              const newTotal = expenses.reduce((acc, exp) =>
-                exp._id === updatedExpense._id
-                  ? acc + updatedExpense.amount
-                  : acc + exp.amount,
-                0);
-              setTotal(newTotal);
-            }}
-          />
-        )}
         <Dialog
           open={confirmOpen}
           onClose={() => setConfirmOpen(false)}
@@ -229,6 +211,19 @@ const ViewExpenses = () => {
           </DialogActions>
         </Dialog>
 
+        <Snackbar
+          open={toast.open}
+          autoHideDuration={4000}
+          onClose={() => setToast({ ...toast, open: false })}
+        >
+          <Alert
+            onClose={() => setToast({ ...toast, open: false })}
+            severity={toast.severity}
+            sx={{ width: '100%' }}
+          >
+            {toast.message}
+          </Alert>
+        </Snackbar>
       </Box>
     </Box>
   );

@@ -8,15 +8,21 @@ import AnalyticsPage from "../pages/AnalyticsPage";
 import AddIncome from "../pages/AddIncome";
 import PrivateRoute from "../components/PrivateRoute";
 import AppLayout from "../components/AppLayout"; 
-
+import HomePage from "../pages/HomePage";
+import ViewIncome from "../pages/ViewIncome";
+import NotFound from '../pages/NotFound';
+import RedirectHandler from "../pages/RedirectHandler";
 
 
 const AppRoutes = () => {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<RedirectHandler />} />  
+        <Route path="/home" element={<HomePage />} />     
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Register />} />
+
         <Route
           path="/dashboard"
           element={
@@ -42,6 +48,14 @@ const AppRoutes = () => {
           }
         />
         <Route
+          path="/view-income-sources"
+          element={
+            <PrivateRoute>
+              <AppLayout><ViewIncome /></AppLayout>
+            </PrivateRoute>
+          }
+        />
+        <Route
           path="/reports"
           element={
             <PrivateRoute>
@@ -57,9 +71,10 @@ const AppRoutes = () => {
             </PrivateRoute>
           }
         />
+
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
   );
 };
-
 export default AppRoutes;

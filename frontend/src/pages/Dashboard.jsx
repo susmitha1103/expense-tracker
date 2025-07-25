@@ -1,4 +1,4 @@
-import { AppBar, Box, CssBaseline, Drawer, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, CssBaseline, Drawer, IconButton, List, ListItem, ListItemIcon,ListItemButton, ListItemText, Toolbar, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import AddIcon from '@mui/icons-material/Add';
 import ReceiptIcon from '@mui/icons-material/Receipt';
 import AnalyticsPage from './AnalyticsPage';
+
 
 
 
@@ -26,15 +27,18 @@ const Dashboard = () => {
     { text: "Add Expense", path: "/add-expense", icon: <AddIcon />, color: 'red' },
     { text: "Add Income", path: "/add-income", icon: <AddIcon />, color: 'green' },
     { text: "View Expenses", path: "/view-expenses", icon: <ReceiptIcon /> },
-    
+    { text: "View Income Sources", path: "/view-income-sources", icon: <ReceiptIcon /> }
+
   ];
 
   const drawer = (
     <List>
       {navItems.map((item) => (
-        <ListItem button key={item.text} component={Link} to={item.path}>
-          <ListItemIcon>{item.icon}</ListItemIcon>
-          <ListItemText primary={item.text} />
+        <ListItem key={item.text} disablePadding>
+          <ListItemButton component={Link} to={item.path}>
+            <ListItemIcon>{item.icon}</ListItemIcon>
+            <ListItemText primary={item.text} />
+          </ListItemButton>
         </ListItem>
       ))}
     </List>
@@ -104,11 +108,8 @@ const Dashboard = () => {
         <Typography variant="body1" gutterBottom>
           Here's your analytics overview:
         </Typography>
-
-        
-
         <Box sx={{ width: '100%', mt: 4 }}>
-    
+
         </Box>
         <AnalyticsPage />
       </Box>

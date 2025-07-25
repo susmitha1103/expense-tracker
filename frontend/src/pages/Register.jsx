@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import AuthForm from "../components/AuthForm";
 import api from "../services/api";
+import TopBarAuth from "../components/TopBarAuth";
 
 const Register = () => {
   const [formData, setFormData] = useState({ username: "", password: "" });
@@ -39,6 +40,7 @@ const Register = () => {
       width="100vw"
       sx={{ overflow: "hidden" }}
     >
+      <TopBarAuth/>
       <Card sx={{ width: 400, p: 3 }}>
         <CardContent>
           <AuthForm

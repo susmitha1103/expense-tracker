@@ -1,21 +1,27 @@
-import Button from '@mui/material/Button';
-import { useState } from 'react';
-import {useNavigate} from 'react-router-dom';
+import { Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const LogoutButton = () => {
   const navigate = useNavigate();
-  const [authStatus, setAuthStatus] = useState('loggedIn');
 
-  const handleLogout = () =>{
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
-    setAuthStatus('true');
-    navigate('/login');
-  }
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("username");
 
-  return(
-    <Button variant="contained" onClick = {handleLogout} >Logout</Button>
+    console.log("After logout:", {
+      token: localStorage.getItem("token"),
+      username: localStorage.getItem("username"),
+    });
+
+    navigate('/');
+    window.location.reload(); 
+  };
+
+  return (
+    <Button variant="contained" onClick={handleLogout}>
+      Logout
+    </Button>
   );
-}
+};
 
 export default LogoutButton;

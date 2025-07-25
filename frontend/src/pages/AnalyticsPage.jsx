@@ -5,6 +5,7 @@ import MonthlyExpensesChart from '../components/MonthlyExpensesChart';
 import CategoryExpensePieChart from '../components/CategoryExpensePieChart';
 import IncomeSourcePieChart from '../components/IncomeSourcePieChart';
 import api from '../services/api';
+import { toast } from 'react-toastify';
 
 const AnalyticsPage = () => {
   const [monthlyData, setMonthlyData] = useState([]);
@@ -24,8 +25,11 @@ const AnalyticsPage = () => {
         setMonthlyData(monthly.data.monthlyExpenses.map(e => e.totalAmount));
         setMonthLabels(monthly.data.monthlyExpenses.map(e => e.month));
 
-        const fixedOrder = ["housing & utilities",  "healthcare", "shopping", "education & stationery",
-       "entertainment", "emis & subscriptions", "miscellaneous"];
+        const fixedOrder = [
+          "housing & utilities", "healthcare", "shopping", "education & stationery",
+          "entertainment", "emis & subscriptions", "miscellaneous"
+        ];
+
         const catRaw = category.data.categoryExpenses || [];
         const catFormatted = fixedOrder.map((cat, idx) => {
           const match = catRaw.find(item => item._id.toLowerCase() === cat.toLowerCase());
@@ -33,7 +37,7 @@ const AnalyticsPage = () => {
         });
         setCategoryData(catFormatted);
 
-       const incomeRaw = income.data.incomeSources || [];
+        const incomeRaw = income.data.incomeSources || [];
         const incomeFormatted = incomeRaw.map((item, idx) => ({
           id: idx,
           value: item.totalAmount,
@@ -42,7 +46,7 @@ const AnalyticsPage = () => {
         setIncomeSourceData(incomeFormatted);
 
       } catch (err) {
-        console.error("Analytics fetch error:", err);
+        toast.error("Failed to load analytics data.");
       }
     };
 

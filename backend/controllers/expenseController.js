@@ -3,10 +3,19 @@ const moment = require('moment');
 
 const addExpense = async(req,res) =>{
 
-  
   const{description,amount, category, date,note} = req.body;
   const validCategories = ["housing & utilities",  "healthcare",  "shopping", "education & stationery",
        "entertainment", "emis & subscriptions", "miscellaneous"];
+  
+  if(description.length > 30){
+    return res.status(400).json({message: "Description should contain only 30 characters"});
+  }     
+  if(amount > 100000){
+    return res.status(400).json({message: "Amount is too high. Please check and try again"});
+  }  
+  if(amount < 1){
+    return res.status(400).json({message: "Amount should be a positive number"});
+  }   
 
   if(!validCategories.includes(category)){
     return res.status(400).json({message: "Invalid category, please select from predefined options"});
@@ -28,7 +37,6 @@ const addExpense = async(req,res) =>{
     res.status(200).json({message: "expense added successfully",expense});
   }
   catch (error) {
-  console.error("Expense creation error:", error);
   res.status(500).json({
     message: "Failed to add expense",
     error: error.message || "Unknown error"
@@ -36,13 +44,13 @@ const addExpense = async(req,res) =>{
 }
 };
 
+
 const getExpenses = async(req,res) =>{
   try{
     const expenses = await Expense.find({user: req.user._id});
     res.status(200).json({message: "fetched expenses successfully",expenses});
   }
   catch(error){
-    console.error(error);
     res.status(403).json({message: "unable to fetch your expenses"});
     
   }
@@ -73,7 +81,6 @@ const updateExpenses = async(req,res) =>{
   });
 }
 catch(error){
-  console.error("error while updating expenses",error);
   res.status(500).json({message: "server error"});
 }
 };
@@ -92,13 +99,12 @@ const deleteExpenses = async (req, res) => {
         .json({ message: "Expense not found or unauthorized" });
     }
 
-    const deletedExpense = await expenseToBeDeleted.deleteOne();
+    await Expense.deleteOne({ _id: req.params.id, user: req.user._id });
 
     return res.status(200).json({
       message: "Expense deleted successfully",
     });
   } catch (error) {
-    console.error("Error deleting expense:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -137,7 +143,6 @@ const getExpensesByCategory = async(req,res) =>{
 
   }
   catch(error){
-    console.error(error);
     res.status(500).json({message: "Internal server error"});
   }
 };
@@ -158,7 +163,6 @@ const getTotalExpenses = async(req,res) =>{
     });
   }
   catch(error){
-    console.error("Error calculating total expenses:", error);
     res.status(500).json({message: "Internal server error"});
   }
 };
@@ -178,7 +182,6 @@ const getAllCategoryExpenses = async (req, res) => {
     ]);
     res.status(200).json({ categoryExpenses });
   } catch (error) {
-    console.error("Error fetching category expenses", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -223,7 +226,6 @@ const getMonthlyExpenses = async (req, res) => {
 
     res.status(200).json({ monthlyExpenses: fullYear });
   } catch (error) {
-    console.error("Error calculating expenses:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
@@ -244,7 +246,6 @@ const getCurrentMonthExpense = async (req, res) => {
 
     res.status(200).json({ total: total });
   } catch (err) {
-    console.error("Error fetching current month expenses:", err);
     res.status(500).json({ message: "Server error" });
   }
 };

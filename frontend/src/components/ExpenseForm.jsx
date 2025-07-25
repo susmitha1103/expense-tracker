@@ -15,7 +15,7 @@ const ExpenseForm = ({ onSubmit, initialValues = {} }) => {
     <Box
       sx={{
         width: '100vw',
-        height: 'calc(100vh - 64px)', // subtract AppBar height if fixed
+        height: 'calc(100vh - 64px)', 
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

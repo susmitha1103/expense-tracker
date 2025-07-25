@@ -19,7 +19,6 @@ const SummaryCards = () => {
       setTotalIncome(incomeRes.data.totalIncome);
       setTotalExpense(expenseRes.data.totalExpense);
     } catch (err) {
-      console.error("Error fetching totals", err);
     }
   };
 
