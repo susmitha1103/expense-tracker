@@ -16,7 +16,6 @@ app.use(express.json());
 app.use(cors({
   origin: ['http://localhost:5173',
      'https://expense-tracker-lac-nu.vercel.app'],
-  credentials: true,
 }));
 
 app.options('*', cors());
