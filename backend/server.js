@@ -10,13 +10,18 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(express.json());
 
 app.use(cors({
   origin: ['http://localhost:5173',
-     'https://expense-tracker-lac-nu.vercel.app/'],
+     'https://expense-tracker-lac-nu.vercel.app'],
   credentials: true,
 }));
+
+app.options('*', cors());
+
+app.use(express.json());
+
+
 
 
 app.use('/api/users', userRoutes);
