@@ -18,16 +18,10 @@ app.use(cors({
      'https://expense-tracker-lac-nu.vercel.app'],
 }));
 
-app.options('/*', cors());
-
-
-
 
 app.use('/api/users', userRoutes);
 app.use('/api/expenses', expenseRoutes);
 app.use('/api/income', incomeRoutes);
-
-
 
 
 const PORT = process.env.PORT || 5000;
