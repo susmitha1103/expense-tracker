@@ -18,7 +18,7 @@ app.use(cors({
      'https://expense-tracker-lac-nu.vercel.app'],
 }));
 
-app.options('*', cors());
+app.options('/*', cors());
 
 
 
