@@ -4,22 +4,24 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import TopBarAuth from '../components/TopBarAuth';
-import { toast } from 'react-toastify';
+
 
 const HomePage = () => {
   const [formData, setFormData] = useState({ username: '', password: '' });
+  const[error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
     try {
       const response = await api.post('/api/users/login', formData);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('username', response.data.username);
-      toast.success("Login successful!");
       navigate('/dashboard');
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Login failed');
+      const error = err.response?.data?.message || 'Login failed';
+      setError(error);
     }
   };
 
@@ -48,6 +50,7 @@ const HomePage = () => {
               formData={formData}
               setFormData={setFormData}
               onSubmit={handleSubmit}
+              error={error}
             />
           </CardContent>
         </Card>

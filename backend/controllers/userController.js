@@ -32,6 +32,10 @@ const loginUser = async (req, res) => {
   try {
     const existingUser = await Users.findOne({ username });
 
+    if (username.length < 6 || password.length < 6) {
+      return res.status(400).json({ message: "username and password must have at least 6 characters" });
+    }
+
     if (!existingUser) {
       return res.status(403).json({ message: "Invalid username or password" });
     }

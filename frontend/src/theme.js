@@ -1,24 +1,23 @@
-// src/theme.js
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#8b5cf6', // Tailwind's purple-500 for buttons
-      contrastText: '#ffffff', // white text on purple
+      main: '#8b5cf6', 
+      contrastText: '#ffffff', 
     },
     secondary: {
-      main: '#475569', // Tailwind's slate-600 (for optional second buttons)
+      main: '#475569', 
       contrastText: '#ffffff',
     },
     background: {
-      default: '#f9fafb', // light neutral
+      default: '#f9fafb', 
       paper: '#ffffff',
     },
     text: {
-      primary: '#1e293b', // Tailwind's slate-800
-      secondary: '#64748b', // Tailwind's slate-500
+      primary: '#1e293b', 
+      secondary: '#64748b', 
     },
   },
   typography: {
@@ -28,6 +27,15 @@ const theme = createTheme({
       fontWeight: 600,
     },
   },
+  breakpoints: {
+  values: {
+    xs: 0,     
+    sm: 600,   
+    md: 900,   
+    lg: 1200,  
+    xl: 1536,  
+  },
+},
   components: {
     MuiButton: {
       styleOverrides: {
@@ -37,7 +45,7 @@ const theme = createTheme({
           paddingBlock: '10px',
           boxShadow: 'none',
           '&:hover': {
-            boxShadow: '0 2px 8px rgba(139, 92, 246, 0.3)', // subtle glow on hover
+            boxShadow: '0 2px 8px rgba(139, 92, 246, 0.3)', 
           },
         },
       },
